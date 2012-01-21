@@ -32,55 +32,16 @@
 
 #include <boost/shared_ptr.hpp>
 #include <boost/make_shared.hpp>
+#include <mineserver/position.h>
 
 #include <mineserver/world/chunk.h>
 #include <mineserver/world/generator.h>
 
 namespace Mineserver
 {
-  struct WorldPosition
-  {
-    double x;
-    double y;
-    double z;
+  typedef Position<double> WorldPosition;
 
-    WorldPosition(double _x, double _y, double _z) : x(_x),y(_y),z(_z) {}
-    WorldPosition() : x(0),y(0),z(0) {}
-    WorldPosition(const WorldPosition& other) : x(other.x),y(other.y),z(other.z) {}
-
-    Mineserver::WorldPosition& operator=(const Mineserver::WorldPosition& other)
-    {
-      if (this != &other) {
-        x = other.x;
-        y = other.y;
-        z = other.z;
-      }
-
-      return *this;
-    }
-  };
-
-  struct WorldBlockPosition
-  {
-    int32_t x;
-    int16_t y;
-    int32_t z;
-
-    WorldBlockPosition(int32_t _x, int16_t _y, int32_t _z) : x(_x),y(_y),z(_z) {}
-    WorldBlockPosition() : x(0),y(0),z(0) {}
-    WorldBlockPosition(const WorldBlockPosition& other) : x(other.x),y(other.y),z(other.z) {}
-
-    Mineserver::WorldBlockPosition& operator=(const Mineserver::WorldBlockPosition& other)
-    {
-      if (this != &other) {
-        x = other.x;
-        y = other.y;
-        z = other.z;
-      }
-
-      return *this;
-    }
-  };
+  typedef PositionEx<int32_t, int16_t, int32_t> WorldBlockPosition;
 
   struct World
   {

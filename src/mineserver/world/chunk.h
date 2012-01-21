@@ -31,33 +31,15 @@
 #include <boost/shared_ptr.hpp>
 
 #include <mineserver/byteorder.h>
+#include <mineserver/position.h>
 
 #define CHUNK_INDEX(x,y,z) (y + (x << 7) + (z << 11))
 
 namespace Mineserver
 {
-  struct World_ChunkPosition
-  {
-    int8_t x;
-    int8_t y;
-    int8_t z;
 
-    World_ChunkPosition(int32_t _x, int16_t _y, int32_t _z) : x(_x),y(_y),z(_z) {}
-    World_ChunkPosition() : x(0),y(0),z(0) {}
-    World_ChunkPosition(const World_ChunkPosition& other) : x(other.x),y(other.y),z(other.z) {}
+  typedef Position<int8_t> World_ChunkPosition;
 
-    Mineserver::World_ChunkPosition& operator=(const Mineserver::World_ChunkPosition& other)
-    {
-      if (this != &other) {
-        x = other.x;
-        y = other.y;
-        z = other.z;
-      }
-
-      return *this;
-    }
-  };
-  
   struct World_Chunk
   {
     typedef boost::shared_ptr<Mineserver::World_Chunk> pointer_t;

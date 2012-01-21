@@ -33,21 +33,20 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/enable_shared_from_this.hpp>
 
+#include <mineserver/position.h>
+
 namespace Mineserver
 {
-  struct Game_PlayerPosition
+  struct Game_PlayerPosition : public Position<double>
   {
-    double x;
-    double y;
-    double z;
     double stance;
     float pitch;
     float yaw;
     bool onGround;
 
-    Game_PlayerPosition(double _x, double _y, double _z, double _stance, float _pitch, float _yaw, bool _onGround) : x(_x),y(_y),z(_z),stance(_stance),pitch(_pitch),yaw(_yaw),onGround(_onGround) {}
-    Game_PlayerPosition(double _x, double _y, double _z) : x(_x),y(_y),z(_z),stance(0),pitch(0),yaw(0),onGround(0) {}
-    Game_PlayerPosition() : x(0),y(0),z(0),stance(0),pitch(0),yaw(0),onGround(0) {}
+    Game_PlayerPosition(double _x, double _y, double _z, double _stance, float _pitch, float _yaw, bool _onGround) : Position<double>(_x, _y, _z),stance(_stance),pitch(_pitch),yaw(_yaw),onGround(_onGround) {}
+    Game_PlayerPosition(double _x, double _y, double _z) : Position<double>(_x, _y, _z),stance(0),pitch(0),yaw(0),onGround(0) {}
+    Game_PlayerPosition() : Position<double>(),stance(0),pitch(0),yaw(0),onGround(0) {}
 
     Mineserver::Game_PlayerPosition& operator= (const Mineserver::Game_PlayerPosition& other)
     {
