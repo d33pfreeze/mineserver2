@@ -135,6 +135,7 @@ void Mineserver::Network_Client::write()
 
 void Mineserver::Network_Client::handleRead(const boost::system::error_code& e, size_t n)
 {
+  printf("handleRead\n\terror_code message: \"%s\" \n\terror_code value: \"%d\"\n", e.message().c_str(), e.value());
   if (!e) {
     m_incomingBuffer.insert(m_incomingBuffer.end(), m_tmp.begin(), m_tmp.begin() + n);
 
