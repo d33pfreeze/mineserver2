@@ -40,12 +40,13 @@ namespace Mineserver
 
   typedef Position<int8_t> World_ChunkPosition;
 
+  /// a chunk in a world
   struct World_Chunk
   {
     typedef boost::shared_ptr<Mineserver::World_Chunk> pointer_t;
 
-    uint32_t x;
-    uint32_t z;
+    uint32_t x; ///< x coordinate
+    uint32_t z; ///< z coordinate
 
     // TODO:
     // This should use the worldHeight property instead of using 128 verbatim.

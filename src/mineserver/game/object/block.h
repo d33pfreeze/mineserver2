@@ -34,33 +34,50 @@
 
 namespace Mineserver
 {
+
+  /// a block on the map
   struct Game_Object_Block
   {
     private:
-      Mineserver::World m_world;
+      Mineserver::World::pointer_t m_world;
       Mineserver::WorldBlockPosition m_pos;
 
     public:
-      Game_Object_Block(Mineserver::World world, Mineserver::WorldBlockPosition pos) : m_world(world),m_pos(pos) {}
-      Game_Object_Block(Mineserver::World world, int32_t x, int16_t y, int32_t z) : m_world(world),m_pos(Mineserver::WorldBlockPosition(x, y, z)) {}
+      /**
+       * \param world  the world the block is in
+       * \param pos   the blocks coordinates
+       */
+      Game_Object_Block(Mineserver::World::pointer_t world, Mineserver::WorldBlockPosition pos) : m_world(world),m_pos(pos) {}
 
+      /**
+       * \param world  the world the block is in
+       * \param x  x coordinates of block
+       * \param y  y coordinates of block
+       * \param z  z coordinates of block
+       */
+      Game_Object_Block(Mineserver::World::pointer_t world, int32_t x, int16_t y, int32_t z) : m_world(world),m_pos(Mineserver::WorldBlockPosition(x, y, z)) {}
+
+      /// gets the blocks type from its chunk
       uint8_t getBlockType() { return getChunk()->getBlockType(m_pos.x & 15, m_pos.y, m_pos.z & 15); }
+      /// gets the blocks meta from its chunk
       uint8_t getBlockMeta() { return getChunk()->getBlockMeta(m_pos.x & 15, m_pos.y, m_pos.z & 15); }
       uint8_t getBlockSkyLight() { return getChunk()->getLightSky(m_pos.x & 15, m_pos.y, m_pos.z & 15); }
       uint8_t getBlockLight() { return getChunk()->getLightBlock(m_pos.x & 15, m_pos.y, m_pos.z & 15); }
 
+      /// sets the blocks type in its chunk
       void setBlockType(uint8_t blockType) { getChunk()->setBlockType(m_pos.x & 15, m_pos.y, m_pos.z & 15, blockType); }
+      /// sets the blocks meta in its chunk
       void setBlockMeta(uint8_t blockMeta) { getChunk()->setBlockMeta(m_pos.x & 15, m_pos.y, m_pos.z & 15, blockMeta); }
       void setBlockSkyLight(uint8_t blockSkyLight) { getChunk()->setLightSky(m_pos.x & 15, m_pos.y, m_pos.z & 15, blockSkyLight); }
       void setBlockLight(uint8_t blockLight) { getChunk()->setLightBlock(m_pos.x & 15, m_pos.y, m_pos.z & 15, blockLight); }
 
     private:
-      Mineserver::World_Chunk getChunk()
+      Mineserver::World_Chunk::pointer_t getChunk()
       {
         int32_t chunk_x = ((m_pos.x) >> 4);
         int32_t chunk_z = ((m_pos.z) >> 4);
 
-        if (!m_world->hasChunk(chunk_x, chunk_z)) { return NULL; }
+        if (!m_world->hasChunk(chunk_x, chunk_z)) { return Mineserver::World_Chunk::pointer((Mineserver::World_Chunk*)NULL); }
 
         return m_world->getChunk(chunk_x, chunk_z);
       }

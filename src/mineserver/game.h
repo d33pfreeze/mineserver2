@@ -47,6 +47,7 @@
 
 namespace Mineserver
 {
+  /// central game logic container
   class Game : public boost::enable_shared_from_this<Mineserver::Game>
   {
   public:
@@ -64,19 +65,19 @@ namespace Mineserver
     typedef boost::signals2::signal<bool (Mineserver::Game::pointer_t, Mineserver::Game_Player::pointer_t, Mineserver::World::pointer_t, Mineserver::WorldBlockPosition wPosition, Mineserver::World_Chunk::pointer_t, Mineserver::World_ChunkPosition cPosition)> blockBreakWatcher_t;
     typedef boost::signals2::signal<bool (Mineserver::Game::pointer_t, Mineserver::Game_Player::pointer_t, Mineserver::World::pointer_t, Mineserver::WorldBlockPosition wPosition, Mineserver::World_Chunk::pointer_t, Mineserver::World_ChunkPosition cPosition, uint8_t type, uint8_t meta)> blockPlaceWatcher_t;
 
-    static const uint32_t timeOutTicks = 1200;
-    static const uint32_t playerListItemUpdateInterval = 20;
+    static const uint32_t timeOutTicks = 1200; ///< number of not-responding ticks in a row, until a client is disconnected
+    static const uint32_t playerListItemUpdateInterval = 20; // number of ticks between updates of player list
     enum {
       chatSelf, chatNearby, chatWorld, chatGlobal
     } messageTypes;
 
   private:
-    int32_t m_nextEid;
-    playerList_t m_players;
-    clientList_t m_clients;
-    playerMap_t m_playerMap;
-    clientMap_t m_clientMap;
-    worldList_t m_worlds;
+    int32_t m_nextEid; ///< next given entity id
+    playerList_t m_players; ///< map of players
+    clientList_t m_clients; ///< map of connected clients
+    playerMap_t m_playerMap; ///< mapping players to clients
+    clientMap_t m_clientMap; ///< mipping clien6s to players
+    worldList_t m_worlds; ///< list of worlds in this game
     messageWatcher_t m_messageWatchers[256];
     movementWatcher_t m_movementPreWatcher;
     movementWatcher_t m_movementPostWatcher;
@@ -88,8 +89,10 @@ namespace Mineserver
     uint32_t m_lastPlayerListItemUpdate;
 
   public:
+    /// main loop for this
     void run();
-		void chat(Mineserver::Network_Client::pointer_t client, std::string message);
+
+    void chat(Mineserver::Network_Client::pointer_t client, std::string message);
 
     Game() : m_nextEid(0) {}
 
