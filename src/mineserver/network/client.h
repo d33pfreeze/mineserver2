@@ -43,6 +43,7 @@
 
 namespace Mineserver
 {
+  /// a connected client
   class Network_Client : public boost::enable_shared_from_this<Mineserver::Network_Client>
   {
   public:
@@ -62,48 +63,82 @@ namespace Mineserver
     uint32_t m_inactiveTicksReply;
 
   public:
+    /** client
+     * \param service  basic asio object
+     * \param protocol  used Minecraft protocol
+     */
     Network_Client(boost::asio::io_service* service, Mineserver::Network_Protocol::pointer_t protocol) : m_socket(*service),m_protocol(protocol),m_writing(false),m_alive(true),m_inactiveTicks(0),m_inactiveTicksReply(0) {}
 
+    /// getter for asio tcp/ip socket
     boost::asio::ip::tcp::socket& socket()
     {
       return m_socket;
     }
 
+    /// getter for minecraft protocol
     Mineserver::Network_Protocol::pointer_t protocol()
     {
       return m_protocol;
     }
 
+    /// is socket written to?
     bool writing()
     {
       return m_writing;
     }
 
+    /// is socket connection considered good?
     bool alive()
     {
       return m_alive;
     }
 
+    /// number of ticks without any response from client
     uint32_t inactiveTicks()
     {
       return m_inactiveTicks;
     }
 
+    /// number of ticks since last keep alive
     uint32_t inactiveTicksReply()
     {
       return m_inactiveTicksReply;
     }
 
+    /// modifyable getter for incomming message list
     std::vector<Mineserver::Network_Message::pointer_t>& incoming() { return m_incoming; }
+    /// modifyable getter for incomming message list
     std::vector<Mineserver::Network_Message::pointer_t>& outgoing() { return m_outgoing; }
 
+    /// start reading from buffer
     void read();
+
+    /** set inactive ticks to 0
+     * \see inactiveTicks
+     */
     void resetInactiveTicks();
+
+    /** set ticks since last keep-alive to 0
+     * \see inactiveTicksReply
+     */
     void resetInactiveTicksReply();
+
+    /// executed once every tick for every player
     void run();
+
+    /// executed as the socket is opened
     void start();
+
+    /// closes the socket
     void stop();
+
+    /** marks player as timed out. A kick message will be sent, but
+     * not assured to be recieved by client. The socket will be
+     * considered unusable afterwards.
+     */
     void timedOut();
+
+    /// sends messages in outgoing queue
     void write();
 
   private:

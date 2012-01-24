@@ -34,11 +34,13 @@
 
 namespace Mineserver
 {
+  /// a message sent to client
   class Network_Message
   {
   public:
     typedef boost::shared_ptr<Mineserver::Network_Message> pointer_t;
 
+    /// all messages
     enum messageType
     {
       MESSAGE_KEEP_ALIVE = 0x00,
@@ -109,6 +111,7 @@ namespace Mineserver
     } messageTypes;
 
   public:
+    /// message id
     uint8_t mid;
   };
 }

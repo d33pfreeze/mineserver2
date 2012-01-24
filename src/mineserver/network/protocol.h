@@ -39,6 +39,7 @@ namespace Mineserver
 {
   class Network_Message;
 
+  /// converts between Network_Message and actual byte arrays
   class Network_Protocol
   {
   public:
@@ -50,7 +51,18 @@ namespace Mineserver
       STATE_ERROR
     };
 
+    /** resolve a recieved byte array into a Network_Message
+     * \param bytes  byte array
+     * \param message  network message
+     * \returns one of the states STATE_GOOD, STATE_STOP or STATE_ERROR
+     */
     virtual int parse(std::vector<uint8_t>& bytes, Mineserver::Network_Message** message) = 0;
+
+    /** assemble a byte array from a Network_Message
+     * \param bytes  byte array
+     * \param message  netowork message
+     * \returns one of the states STATE_GOOD, STATE_STOP or STATE_ERROR
+     */
     virtual int compose(std::vector<uint8_t>& bytes, const Mineserver::Network_Message& message) = 0;
   };
 }
